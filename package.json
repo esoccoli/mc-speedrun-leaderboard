@@ -1,0 +1,11 @@
+{
+  "name": "pokemon-vgc-stats",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ella Soccoli",
+  "license": "MIT",
+  "description": ""
+}
