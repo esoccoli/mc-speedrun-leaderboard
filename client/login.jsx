@@ -2,6 +2,7 @@ const helper = require('./helper.js');
 const React = require('react');
 const { createRoot } = require('react-dom/client');
 
+// Captures and validates user entered account info, signs them in if everything is valid
 const handleLogin = (e) => {
   e.preventDefault();
   helper.hideError();
@@ -18,6 +19,7 @@ const handleLogin = (e) => {
   return false;
 };
 
+// Captures and validates user entered account info, & creates account if everything is valid
 const handleSignup = (e) => {
   e.preventDefault();
   helper.hideError();
@@ -40,6 +42,7 @@ const handleSignup = (e) => {
   return false;
 };
 
+// Displays the login screen and prompts user to enter their account info
 const LoginWindow = (props) => {
   return (
     <form id='loginForm'
@@ -58,6 +61,7 @@ const LoginWindow = (props) => {
   );
 };
 
+// Displays the signup screen and prompts user to enter account info
 const SignupWindow = (props) => {
   return (
     <form id="signupForm"
