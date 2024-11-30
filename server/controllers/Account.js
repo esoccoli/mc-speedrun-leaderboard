@@ -24,6 +24,7 @@ const login = (req, res) => {
 
     req.session.account = Account.toAPI(account);
 
+    // TODO: Change the redirect to proper main page
     return res.json({ redirect: '/maker' });
   });
 };
@@ -46,6 +47,8 @@ const signup = async (req, res) => {
     const newAccount = new Account({ username, password: hash });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
+
+    // TODO: Change redirect to proper main page
     return res.json({ redirect: '/maker' });
   } catch (err) {
     console.log(err);

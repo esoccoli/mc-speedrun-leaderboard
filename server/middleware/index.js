@@ -7,6 +7,7 @@ const requiresLogin = (req, res, next) => {
 
 const requiresLogout = (req, res, next) => {
   if (req.session.account) {
+    // TODO: Change redirect once page is renamed
     return res.redirect('/maker');
   }
   return next();
