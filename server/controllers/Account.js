@@ -23,9 +23,7 @@ const login = (req, res) => {
     }
 
     req.session.account = Account.toAPI(account);
-
-    // TODO: Change the redirect to proper main page
-    return res.json({ redirect: '/maker' });
+    return res.json({ redirect: '/leaderboard' });
   });
 };
 
@@ -48,8 +46,7 @@ const signup = async (req, res) => {
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
 
-    // TODO: Change redirect to proper main page
-    return res.json({ redirect: '/maker' });
+    return res.json({ redirect: '/leaderboard' });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {
@@ -59,6 +56,34 @@ const signup = async (req, res) => {
   }
 };
 
+// const changePass = async (req, res) => {
+//   const username = `${req.body.username}`;
+//   const newPass = `${req.body.newPass}`;
+//   const newPass2 = `${req.body.newPass2}`;
+
+//   if (!username || !newPass || !newPass2) {
+//     return res.status(400).json({ error: 'All fields are required!' });
+//   }
+
+//   if (newPass !== newPass2) {
+//     return res.status(400).json({ error: 'Passwords do not match!' });
+//   }
+
+//   try {
+//     const hash = await Account.generateHash(newPass);
+//     const newAccount = new Account({ username, password: hash });
+//     await newAccount.save();
+//     req.session.account = Account.toAPI(newAccount);
+
+//     return res.json({ redirect: '/leaderboard' });
+//   } catch (err) {
+//     console.log(err);
+//     if (err.code === 11000) {
+//       return res.status(400).json({ error: 'Username already in use!' });
+//     }
+//     return res.status(500).json({ error: 'An error occured!' });
+//   }
+// }
 module.exports = {
   loginPage,
   login,

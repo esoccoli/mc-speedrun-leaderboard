@@ -11,12 +11,11 @@ const router = (app) => {
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
-  app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
+  app.get('/getTimes', mid.requiresLogin, controllers.Run.getRuns);
+  app.get('/getPersonal', mid.requiresLogin, controllers.Run.getPersonalRuns);
 
-  app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
-  app.post('/maker', mid.requiresLogin, controllers.Domo.makeDomo);
-
-  app.delete('/deleteDomo', mid.requiresLogin, controllers.Domo.deleteDomo);
+  app.get('/leaderboard', mid.requiresLogin, controllers.Run.lbPage);
+  app.post('/submitTime', mid.requiresLogin, controllers.Run.addRun);
 };
 
 module.exports = router;

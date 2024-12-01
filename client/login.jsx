@@ -1,6 +1,7 @@
 const helper = require('./helper.js');
 const React = require('react');
 const { createRoot } = require('react-dom/client');
+const { Form, Label, Input } = require('reactstrap');
 
 // Captures and validates user entered account info, signs them in if everything is valid
 const handleLogin = (e) => {
@@ -45,19 +46,18 @@ const handleSignup = (e) => {
 // Displays the login screen and prompts user to enter their account info
 const LoginWindow = (props) => {
   return (
-    <form id='loginForm'
-      name='loginForm'
+    <Form id="loginForm"
+      name="loginForm"
       onSubmit={handleLogin}
-      action='/login'
-      method='POST'
-      className='mainForm'
-    >
-      <label htmlFor='username'>Username: </label>
-      <input id='user' type='text' name='username' placeholder='username' />
-      <label htmlFor='pass'>Password: </label>
-      <input id='pass' type='password' name='pass' placeholder='password' />
-      <input className='formSubmit' type='submit' value='Sign in' />
-    </form>
+      action="/login"
+      method="POST"
+      className="mainForm">
+      <Label htmlFor="username">Username: </Label>
+      <Input id="user" type="text" name="username" placeholder="username" />
+      <Label htmlFor="pass">Password: </Label>
+      <Input id="pass" type="password" name="pass" placeholder="password" />
+      <Input className="formSubmit" type="submit" value="Sign in" />
+    </Form>
   );
 };
 
@@ -73,10 +73,10 @@ const SignupWindow = (props) => {
       <label htmlFor="username">Username: </label>
       <input id="user" type="text" name="username" placeholder="username" />
       <label htmlFor="pass">Password: </label>
-      <input id="pass" type="password" name="pass" placeholder='password' />
+      <input id="pass" type="password" name="pass" placeholder="password" />
       <label htmlFor="pass">Password: </label>
-      <input id="pass2" type="password" name="pass2" placeholder='retype password' />
-      <input className='formSubmit' type='submit' value='Sign in' />
+      <input id="pass2" type="password" name="pass2" placeholder="retype password" />
+      <input className="formSubmit" type="submit" value="Sign in" />
     </form>
   );
 };

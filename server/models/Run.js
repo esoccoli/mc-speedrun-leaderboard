@@ -3,7 +3,7 @@ const _ = require('underscore');
 
 const setTime = (time) => _.escape(time).trim();
 
-const CompletionSchema = new mongoose.Schema({
+const RunSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     required: true,
@@ -17,17 +17,27 @@ const CompletionSchema = new mongoose.Schema({
     set: setTime,
   },
   /*
+    Any% = Any Percent (just beat the game)
     RSG = Random Seed Glitchless
     SSG = Set Seed Glitchless
     AA = All Advancements
   */
   category: {
     type: String,
-    enum: ['RSG', 'SSG', 'AA'],
+    enum: ['Any% RSG', 'Any% SSG', 'AA RSG', 'AA SSG'],
     required: true,
-    trim: true,
   },
-  private: {
+  version: {
+    type: String,
+    enum: ['Pre 1.8', '1.8', '1.9-1.12', '1.13-1.15', '1.16+'],
+    required: true,
+  },
+  difficulty: {
+    type: String,
+    enum: ['Easy', 'Normal', 'Hard', 'Hardcore', 'Peaceful'],
+    required: true,
+  },
+  verified: {
     type: Boolean,
     required: true,
     default: false,
@@ -38,11 +48,13 @@ const CompletionSchema = new mongoose.Schema({
   },
 });
 
-CompletionSchema.statics.toAPI = (doc) => ({
+RunSchema.statics.toAPI = (doc) => ({
   time: doc.time,
   category: doc.category,
-  private: doc.private,
+  version: doc.version,
+  difficulty: doc.difficulty,
+  verified: doc.verified,
 });
 
-const CompletionModel = mongoose.model('Completion', CompletionSchema);
-module.exports = CompletionModel;
+const RunModel = mongoose.model('Run', RunSchema);
+module.exports = RunModel;
