@@ -1,0 +1,30 @@
+1. The purpose of this application is to display a leaderboard of the fastest Minecraft completion times
+2. I removed most of the references to domos and started replacing the content from domomaker with the appropriate content for this app
+3. I still have to make the leaderboard page, the password change functionality, and test the submission form (redis doesnt like when i dont have wifi bc bus... who knew) I also have to implement my profit model. I plan to spend at least a little time each day working on this so that I am able to get everything done on time, and am not cramming it on the last day or 2.
+4. I am using react to display the leaderboard, and update it dynamically when new times are submitted. I am also using react to dynamically switch the display on the leaderboard based on the selected category. I have made a component for the submission form, and a component for displaying the leaderboard. I still plan to add a component for each of the leaderboard categories, and a component for a leaderboard entry. I also might make a react component for a block of the page and a placeholder ad in the middle
+5. I am storing accounts and time submissions in Mongodb. I have set it up for storing all the data I plan to store
+6. My profit model will be ads on the page, and a premium mode that disables the ads. I have not implemented it yet, but I plan to do that by making a react compont for an ad and then adding it to a few places on the page
+7. I plan to go above and beyond by making more than the required number of react components. Other than that, i dont know... ill figure it out when i get there.
+8. No
+
+Endpoint documentation
+
+/getRuns
+Supported Methods: GET
+Middleware: requires login
+Query params: whether to include unverified runs in the listing, and the category
+Description: retreives a list of submitted runs for the specified category
+Return Type: json
+
+/getPersonalRuns
+Supported methods: GET
+Middleware: requires login
+Query params: the currently signed in user
+Description: retreives a list of runs that the current user has submitted
+Return type: json
+
+/submitTime
+Supported method: post
+middleware: requires login
+query params: time, category, version, difficulty
+description: creates a new entry in the database with a new run
