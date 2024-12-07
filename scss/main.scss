@@ -19,6 +19,7 @@
   into this file.
 */
 @use 'other';
+@use 'minecraft';
 
 /*With sass we can also define variables like the two below. We can
   then use these variables in place of where we might use their values.
@@ -38,15 +39,15 @@ $appWidth: 200px;
   will be evaluated to static values at compile time.
 */
 @function calcDivMargin($width) {
-    @return calc($width / 4);
+  @return calc($width / 4);
 }
 
 html,
 body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /*Another thing sass lets us do is nest elements to better organize
@@ -56,31 +57,31 @@ body {
   can see what this all compiles to.
 */
 #app {
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
 
-    div {
-        margin-top: calcDivMargin($appWidth);
+  div {
+    margin-top: calcDivMargin($appWidth);
 
-        h1 {
-            color: $contrastColor;
-        }
-
-        h2 i {
-            color: $contrastColor;
-        }
-
-        ul {
-            width: $appWidth;
-            margin: 0 auto;
-            text-align: left;
-
-            li {
-                margin-top: 10px;
-                word-break: break-all;
-                font-size: 1.1em;
-            }
-        }
+    h1 {
+      color: $contrastColor;
     }
+
+    h2 i {
+      color: $contrastColor;
+    }
+
+    ul {
+      width: $appWidth;
+      margin: 0 auto;
+      text-align: left;
+
+      li {
+        margin-top: 10px;
+        word-break: break-all;
+        font-size: 1.1em;
+      }
+    }
+  }
 }

@@ -3,7 +3,8 @@ const React = require('react');
 
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
-const { Form, Label, Input } = require('reactstrap');
+const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Form } = require('reactstrap');
+// const { Form, Label, Input } = require('reactstrap');
 
 const handleNewSubmission = (e, onTimeSubmitted) => {
   e.preventDefault();
@@ -58,41 +59,53 @@ const handleDomo = (e, onDomoAdded) => {
 //   return false;
 // }
 const RunForm = (props) => {
+
+  const [modal, setModal] = useState(false);
+
+  const toggleSubmitForm = () => setModal(!modal);
   return (
-    <div>
-      <Form id='submissionForm'
-        onSubmit={(e) => handleNewSubmission(e, props.triggerReload)}
-        name='submissionForm'
-        action='/submitTime'
-        method='POST'
-        className='submissionForm'
-      >
-        <Label htmlFor='time'>Time: </Label>
-        <Input id='completionTime' type='text' name='time' placeholder='7:15.244' />
-        <Label htmlFor='category'>Category: </Label>
-        <Input id='category' type='select' name='category' placeholder='Any% RSG' />
-        <Label htmlFor='version'>Version: </Label>
-        <Input id='version' type='select' name='version' placeholder='1.16+' />
-        <Label htmlFor='difficulty'>Difficulty: </Label>
-        <Input id='difficulty' type='select' name='difficulty' placeholder='Easy' />
-        <Input className='submitBtn' type='submit' value="Submit Time" />
-      </Form>
-      {/* <form id='deleteDomoForm'
-        onSubmit={(e) => handleDelete(e, props.triggerReload)}
-        name='deleteDomoForm'
-        action='/deleteDomo'
-        method='DELETE'
-        className='deleteDomoForm'
-      >
-        <label htmlFor='name'>Name: </label>
-        <input id='delDomoName' type='text' name='name' placeholder='Domo Name' />
-        <label htmlFor='nickname'>Nickname: </label>
-        <input id='delDomoNickname' type='text' name='Nickname' placeholder='Domo Nickname' />
-        <label htmlFor='age'>Age: </label>
-        <input id='delDomoAge' type='number' min='0' name='age' />
-        <input className='deleteDomoSubmit' type='submit' value="Delete Domo" />
-      </form> */}
-    </div>
+    <>
+      <button onClick={toggleSubmitForm}>Submit</button>
+      <Modal isOpen={modal} toggle={toggleSubmitForm}>
+        <ModalHeader toggle={toggleSubmitForm}>Submit Run</ModalHeader>
+        <ModalBody>
+          <Form id='submissionForm'
+            onSubmit={(e) => handleNewSubmission(e, props.triggerReload)}
+            name='submissionForm'
+            action='/submitTime'
+            method='POST'
+            className='submissionForm'
+          >
+            <div id='completionTime'>
+              <InputGroup>
+                <Input id='hours' type='number' min={0} name='hours' />
+                <Label htmlFor='hours'>&nbsp; h &nbsp;</Label>
+                <Input id='minutes' type='number' min={0} max={59} name='minutes' />
+                <Label htmlFor='minutes'>&nbsp; m &nbsp;</Label>
+                <Input id='seconds' type="number" min={0} max={59} name='seconds' />
+                <Label htmlFor="seconds">&nbsp; s &nbsp;</Label>
+                <Input id='milliseconds' type="number" name="milliseconds" min={0} max={999} />
+                <Label htmlFor="milliseconds"> &nbsp; ms &nbsp;</Label>
+              </InputGroup>
+            </div>
+            <Label htmlFor='category'>Category: </Label>
+            <Input id='category' type='time' name='category' placeholder='Any% RSG' />
+            <Label htmlFor='version'>Version: </Label>
+            <Input id='version' type='select' name='version' placeholder='1.16+' />
+            <Label htmlFor='difficulty'>Difficulty: </Label>
+            <Input id='difficulty' type='select' name='difficulty' placeholder='Easy' />
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={toggleSubmitForm}>
+            Do Something
+          </Button>{' '}
+          <Button color="secondary" onClick={toggleSubmitForm}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
   );
 };
 
@@ -142,7 +155,7 @@ const App = () => {
   return (
     <div>
       <div id='submitRun'>
-        <SubmissionForm triggerReload={() => setReloadRuns(!reloadRuns)} />
+        <RunForm triggerReload={() => setReloadRuns(!reloadRuns)} />
       </div>
       <div id='runs'>
         <RunList runs={[]} reloadRuns={reloadRuns} />
