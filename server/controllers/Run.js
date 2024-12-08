@@ -17,12 +17,17 @@ const addRun = async (req, res) => {
     || !req.body.category
     || !req.body.version
     || !req.body.difficulty
-    || !req.body.verified) {
+  ) {
+    // console.log('checking all required params are present');
+    // console.log(`time: ${req.body.time}`);
+    // console.log(`category: ${req.body.category}`);
+    // console.log(`version: ${req.body.version}`);
+    // console.log(`difficulty: ${req.body.difficulty}`);
+    // console.log(`verified: ${req.body.verified}`);
     return res.status(400).json({ error: 'All fields are required' });
   }
-
   const runData = {
-    user: req.session.account._id,
+    user: req.session.account.username,
     time: req.body.time,
     category: req.body.category,
     version: req.body.version,
@@ -112,10 +117,12 @@ const getRuns = async (req, res) => {
 
   // If the includeUnverified param is missing or set to false, default to not including them
   // Otherwise, include all results regardless of verification status
-  if (!req.body.includeUnverified || req.body.includeUnverified === 'false') {
+
+  // TODO: Change this back to defaulting to false later
+  if (req.body.includeUnverified === 'false') {
     query = { category: req.body.category, verified: true };
   } else {
-    query = { category: req.body.category };
+    query = {};
   }
 
   try {
@@ -130,7 +137,7 @@ const getRuns = async (req, res) => {
 
 // Gets all of the completions submitted by the currently logged in user
 const getPersonalRuns = async (req, res) => {
-  const query = { user: req.session.account._id };
+  const query = { user: req.session.account.user };
 
   try {
     const docs = await Run.find(query).select('user time category version difficulty verified').exec();

@@ -11867,7 +11867,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-/* mc generated 2024-12-07T18:37:18Z */
 /*With sass we can also define variables like the two below. We can
   then use these variables in place of where we might use their values.
   For example, anywhere that I want to set the color of an element,

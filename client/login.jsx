@@ -27,6 +27,7 @@ const handleSignup = (e) => {
   const username = e.target.querySelector('#user').value;
   const pass = e.target.querySelector('#pass').value;
   const pass2 = e.target.querySelector('#pass2').value;
+  const isAdmin = e.target.querySelector('#isAdmin').value;
 
   if (!username || !pass || !pass2) {
     helper.handleError('All fields are required');
@@ -38,7 +39,8 @@ const handleSignup = (e) => {
     return false;
   }
 
-  helper.sendPost(e.target.action, { username, pass, pass2 });
+  helper.sendPost(e.target.action, { username, pass, pass2, isAdmin });
+  console.log(isAdmin);
   return false;
 };
 
@@ -75,7 +77,10 @@ const SignupWindow = (props) => {
       <input id="pass" type="password" name="pass" placeholder="password" />
       <label htmlFor="pass">Password: </label>
       <input id="pass2" type="password" name="pass2" placeholder="retype password" />
-      <input className="formSubmit" type="submit" value="Sign in" />
+      <label htmlFor="isAdmin">Admin? &nbsp;</label>
+      <input type="hidden" name="isAdmin" value={false} />
+      <input type="checkbox" name="isAdmin" id="isAdmin" value={true} />
+      <input className="formSubmit" type="submit" value="Create Account" />
     </form>
   );
 };

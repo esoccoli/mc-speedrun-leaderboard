@@ -33,6 +33,10 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+  },
   createdDate: {
     type: Date,
     default: Date.now,
@@ -43,6 +47,7 @@ const AccountSchema = new mongoose.Schema({
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
   _id: doc._id,
+  isAdmin: doc.isAdmin,
 });
 
 // Helper function to hash a password

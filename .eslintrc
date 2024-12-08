@@ -3,7 +3,6 @@
   "rules": {
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
-    "import/extensions": "off",
-    "parser": "@babel/eslint-parser"
+    "import/extensions": "off"
   }
 }

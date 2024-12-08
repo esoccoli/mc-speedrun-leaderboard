@@ -9,14 +9,36 @@ const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, L
 const handleNewSubmission = (e, onTimeSubmitted) => {
   e.preventDefault();
   helper.hideError();
+  // console.log(e.target.style.backgroundColor);
+  // e.target.style.backgroundColor = "red";
 
-  const time = e.target.querySelector('#completionTime').value;
+  const timeHrs = e.target.querySelector('#hours').value;
+  const timeMins = e.target.querySelector('#minutes').value;
+  const timeSecs = e.target.querySelector('#seconds').value;
+  const timeMs = e.target.querySelector('#milliseconds').value;
+
+  let time = '';
+
+  if (timeHrs !== 0) {
+    time += `${timeHrs}:`;
+  }
+  time += `${timeMins}:${timeSecs}.${timeMs}`;
+
+  // const time = e.target.querySelector('#completionTime').value;
   const category = e.target.querySelector('#category').value;
   const version = e.target.querySelector('#version').value;
   const difficulty = e.target.querySelector('#difficulty').value;
-  // const verified = false;
+  const verified = false;
 
-  if (!time || !category || !version || !difficulty) {
+  console.log(`timeHrs: ${timeHrs}`);
+  console.log(`timeMins: ${timeMins}`);
+  console.log(`timeSecs: ${timeSecs}`);
+  console.log(`timeMs: ${timeMs}`);
+  console.log(`category: ${category}`);
+  console.log(`version: ${version}`);
+  console.log(`difficulty: ${difficulty}`);
+
+  if (!timeHrs || !timeMins || !timeSecs || !timeMs || !category || !version || !difficulty) {
     helper.handleError('All fields are required');
     return false;
   }
@@ -69,16 +91,19 @@ const RunForm = (props) => {
       <Modal isOpen={modal} toggle={toggleSubmitForm}>
         <ModalHeader toggle={toggleSubmitForm}>Submit Run</ModalHeader>
         <ModalBody>
-          <Form id='submissionForm'
-            onSubmit={(e) => handleNewSubmission(e, props.triggerReload)}
+          <form id='submissionForm'
+            onSubmit={(e) => {
+              toggleSubmitForm();
+              handleNewSubmission(e, props.triggerReload);
+            }}
             name='submissionForm'
-            action='/submitTime'
+            action='/addRun'
             method='POST'
             className='submissionForm'
           >
             <div id='completionTime'>
               <InputGroup>
-                <Input id='hours' type='number' min={0} name='hours' />
+                <Input id='hours' type='number' min={0} max={999} name='hours' />
                 <Label htmlFor='hours'>&nbsp; h &nbsp;</Label>
                 <Input id='minutes' type='number' min={0} max={59} name='minutes' />
                 <Label htmlFor='minutes'>&nbsp; m &nbsp;</Label>
@@ -88,23 +113,53 @@ const RunForm = (props) => {
                 <Label htmlFor="milliseconds"> &nbsp; ms &nbsp;</Label>
               </InputGroup>
             </div>
-            <Label htmlFor='category'>Category: </Label>
-            <Input id='category' type='time' name='category' placeholder='Any% RSG' />
-            <Label htmlFor='version'>Version: </Label>
-            <Input id='version' type='select' name='version' placeholder='1.16+' />
-            <Label htmlFor='difficulty'>Difficulty: </Label>
-            <Input id='difficulty' type='select' name='difficulty' placeholder='Easy' />
-          </Form>
+
+            {/* Run category */}
+            <div id='runCategory'>
+              <label htmlFor='category'>Category: &nbsp; </label>
+              <select id='category' type='select' name='category' placeholder='Any% RSG'>
+                <option value="Any% RSG">Any% RSG</option>
+                <option value="Any% SSG">Any% SSG</option>
+                <option value="AA RSG">AA RSG</option>
+                <option value="AA SSG">AA SSG</option>
+              </select>
+            </div>
+
+            {/* Game version */}
+            <div id='gameVersion'>
+              <Label htmlFor='version'>Version: &nbsp;</Label>
+              <select name="version" id="version">
+                <option value="Pre 1.8">Pre 1.8</option>
+                <option value="1.8">1.8</option>
+                <option value="1.9-1.12">1.9-1.12</option>
+                <option value="1.13-1.15">1.13-1.15</option>
+                <option value="1.16+">1.16+</option>
+              </select>
+            </div>
+
+            {/* Game difficulty */}
+            <div id='gameDifficulty'>
+              <Label htmlFor='difficulty'>Difficulty: </Label>
+              <select name="difficulty" id="difficulty">
+                <option value="Easy">Easy</option>
+                <option value="Normal">Normal</option>
+                <option value="Hard">Hard</option>
+                <option value="Hardcore">Hardcore</option>
+                <option value="Peaceful">Peaceful</option>
+              </select>
+            </div>
+            <Button type='submit' color="success" className='btn' onSubmit={(e) => handleNewSubmission(e, props.triggerReload)}>
+              Submit
+            </Button>
+          </form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggleSubmitForm}>
-            Do Something
-          </Button>{' '}
+          {' '}
           <Button color="secondary" onClick={toggleSubmitForm}>
             Cancel
           </Button>
         </ModalFooter>
-      </Modal>
+      </Modal >
     </>
   );
 };

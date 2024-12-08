@@ -5,7 +5,7 @@ const setTime = (time) => _.escape(time).trim();
 
 const RunSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.String,
     required: true,
     trim: true,
     ref: 'Account',
@@ -49,6 +49,7 @@ const RunSchema = new mongoose.Schema({
 });
 
 RunSchema.statics.toAPI = (doc) => ({
+  user: doc.user,
   time: doc.time,
   category: doc.category,
   version: doc.version,
