@@ -1,4 +1,6 @@
+const { Model } = require('mongoose');
 const models = require('../models');
+const AccountModel = require('../models/Account');
 
 const { Account } = models;
 
@@ -85,9 +87,16 @@ const signup = async (req, res) => {
 //     return res.status(500).json({ error: 'An error occured!' });
 //   }
 // }
+
+const getNumUsers = async (req, res) => {
+  const numUsers = await Account.countDocuments();
+  return res.status(200).json({ numUsers });
+};
+
 module.exports = {
   loginPage,
   login,
   logout,
   signup,
+  getNumUsers,
 };

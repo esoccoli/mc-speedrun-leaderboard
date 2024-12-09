@@ -16,6 +16,9 @@ const router = (app) => {
 
   app.get('/leaderboard', mid.requiresLogin, controllers.Run.lbPage);
   app.post('/addRun', mid.requiresLogin, controllers.Run.addRun);
+
+  app.get('/getNumUsers', mid.requiresLogin, controllers.Account.getNumUsers);
+  app.get('/getNumSubmissions', mid.requiresLogin, controllers.Run.getNumSubmissions);
 };
 
 module.exports = router;

@@ -1,9 +1,10 @@
+const { set } = require('mongoose');
 const helper = require('./helper.js');
 const React = require('react');
 
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
-const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Form } = require('reactstrap');
+const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Form, Table, Container } = require('reactstrap');
 // const { Form, Label, Input } = require('reactstrap');
 
 const handleNewSubmission = (e, onTimeSubmitted) => {
@@ -43,7 +44,7 @@ const handleNewSubmission = (e, onTimeSubmitted) => {
     return false;
   }
 
-  helper.sendPost(e.target.action, { time, category, version, difficulty, verified: false }, onTimeSubmitted);
+  helper.sendPost(e.target.action, { time, category, version, difficulty, verified }, onTimeSubmitted);
   return false;
 };
 
@@ -87,7 +88,7 @@ const RunForm = (props) => {
   const toggleSubmitForm = () => setModal(!modal);
   return (
     <>
-      <button onClick={toggleSubmitForm}>Submit</button>
+      <Button color="success" onClick={toggleSubmitForm}>Submit</Button>
       <Modal isOpen={modal} toggle={toggleSubmitForm}>
         <ModalHeader toggle={toggleSubmitForm}>Submit Run</ModalHeader>
         <ModalBody>
@@ -103,20 +104,20 @@ const RunForm = (props) => {
           >
             <div id='completionTime'>
               <InputGroup>
-                <Input id='hours' type='number' min={0} max={999} name='hours' />
+                <Input id='hours' type='number' min={0} max={999} name='hours' required />
                 <Label htmlFor='hours'>&nbsp; h &nbsp;</Label>
-                <Input id='minutes' type='number' min={0} max={59} name='minutes' />
+                <Input id='minutes' type='number' min={0} max={59} name='minutes' required />
                 <Label htmlFor='minutes'>&nbsp; m &nbsp;</Label>
-                <Input id='seconds' type="number" min={0} max={59} name='seconds' />
+                <Input id='seconds' type="number" min={0} max={59} name='seconds' required />
                 <Label htmlFor="seconds">&nbsp; s &nbsp;</Label>
-                <Input id='milliseconds' type="number" name="milliseconds" min={0} max={999} />
+                <Input id='milliseconds' type="number" name="milliseconds" min={0} max={999} required />
                 <Label htmlFor="milliseconds"> &nbsp; ms &nbsp;</Label>
               </InputGroup>
             </div>
 
             {/* Run category */}
             <div id='runCategory'>
-              <label htmlFor='category'>Category: &nbsp; </label>
+              <Label htmlFor='category'>Category: &nbsp; </Label>
               <select id='category' type='select' name='category' placeholder='Any% RSG'>
                 <option value="Any% RSG">Any% RSG</option>
                 <option value="Any% SSG">Any% SSG</option>
@@ -186,34 +187,93 @@ const RunList = (props) => {
 
   const runNode = runs.map(run => {
     return (
-      <div key={run.id} className='run'>
-        <img src="/assets/img/domoface.jpeg" alt="domo face" className='domoFace' />
-        <h3 className='runner'>Runner: {run.user}</h3>
-        <h3 className='time'>Time: {run.time}</h3>
-        <h3 className='category'>Category: {run.category}</h3>
-        <h3 className='version'>Version: {run.version}</h3>
-        <h3 className='difficulty'>Difficulty: {run.difficulty}</h3>
-      </div>
+      <tr key={run.id} className='run'>
+        {/* <img src="/assets/img/domoface.jpeg" alt="domo face" className='domoFace' /> */}
+        <td className='place'>{run.id}</td>
+        <td className='runner'>{run.user}</td>
+        <td className='time'>{run.time}</td>
+        <td className='category'>{run.category}</td>
+        <td className='version'>{run.version}</td>
+        <td className='difficulty'>{run.difficulty}</td>
+        <td className='verified'>{run.verified ? 'True' : 'False'}</td>
+      </tr>
     );
   });
 
   return (
     <div className='runList'>
-      {runNode}
+      <Table>
+        <thead>
+          <tr>
+            <th>Place</th>
+            <th>Runner</th>
+            <th>Time</th>
+            <th>Category</th>
+            <th>Version</th>
+            <th>Difficulty</th>
+            <th>Verified</th>
+          </tr>
+        </thead>
+        <tbody>
+          {runNode}
+        </tbody>
+      </Table>
     </div>
+  );
+};
+
+const GameStats = (props) => {
+  const [numUsers, setNumUsers] = useState(false);
+  const [numSubmissions, setNumSubmissions] = useState(false);
+
+  useEffect(() => {
+    const getNumUsers = async () => {
+      const response = await fetch('/getNumUsers');
+      const data = await response.json();
+      setNumUsers(data.numUsers);
+    };
+    getNumUsers();
+  }, [props.reloadStats]);
+
+  useEffect(() => {
+    const getNumSubmissions = async () => {
+      const response = await fetch('/getNumSubmissions');
+      const data = await response.json();
+      setNumSubmissions(data.numSubmissions);
+    }
+    getNumSubmissions();
+  }, [props.reloadStats]);
+
+  return (
+    <Container id='gameStats'>
+      <div>
+        Users: {numUsers}
+      </div>
+      <div>
+        Submissions: {numSubmissions}
+      </div>
+    </Container>
   );
 };
 
 const App = () => {
   const [reloadRuns, setReloadRuns] = useState(false);
+  const [reloadStats, setReloadStats] = useState(false);
 
   return (
     <div>
       <div id='submitRun'>
-        <RunForm triggerReload={() => setReloadRuns(!reloadRuns)} />
+        <RunForm triggerReload={() => { setReloadRuns(!reloadRuns); setReloadStats(!reloadStats) }} />
       </div>
-      <div id='runs'>
-        <RunList runs={[]} reloadRuns={reloadRuns} />
+      <div className='col-8'>
+        <div id='runs'>
+          <RunList runs={[]} reloadRuns={reloadRuns} />
+        </div>
+      </div>
+      <div className='col-4'>
+        <div id='stats'>
+          <GameStats reloadStats={reloadStats} />
+        </div>
       </div>
     </div>
   );

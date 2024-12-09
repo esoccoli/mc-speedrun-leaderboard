@@ -1,5 +1,6 @@
 // const { mongoose } = require('mongoose');
 const models = require('../models');
+const RunModel = require('../models/Run');
 
 const { Run } = models;
 
@@ -118,8 +119,8 @@ const getRuns = async (req, res) => {
   // If the includeUnverified param is missing or set to false, default to not including them
   // Otherwise, include all results regardless of verification status
 
-  // TODO: Change this back to defaulting to false later
-  if (req.body.includeUnverified === 'false') {
+  // TODO: Change this to only retrieve the selected category
+  if (!req.session.account.isAdmin) {
     query = { category: req.body.category, verified: true };
   } else {
     query = {};
@@ -149,11 +150,18 @@ const getPersonalRuns = async (req, res) => {
   }
 };
 
+const getNumSubmissions = async (req, res) => {
+  const numSubmissions = await RunModel.countDocuments();
+
+  return res.status(200).json({ numSubmissions });
+};
+
 module.exports = {
   lbPage,
   addRun,
   getRuns,
   getPersonalRuns,
+  getNumSubmissions,
   // makeDomo,
   // deleteDomo,
   // getDomos,
