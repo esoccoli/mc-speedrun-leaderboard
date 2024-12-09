@@ -222,6 +222,8 @@ const RunList = (props) => {
   );
 };
 
+// Keeps track of the total number of users and the total number of submitted runs
+// and displays those to the user
 const GameStats = (props) => {
   const [numUsers, setNumUsers] = useState(false);
   const [numSubmissions, setNumSubmissions] = useState(false);
@@ -263,7 +265,10 @@ const App = () => {
   return (
     <div>
       <div id='submitRun'>
-        <RunForm triggerReload={() => { setReloadRuns(!reloadRuns); setReloadStats(!reloadStats) }} />
+        <RunForm triggerReload={() => {
+          setReloadRuns(!reloadRuns);
+          setReloadStats(!reloadStats)
+        }} />
       </div>
       <div className='col-8'>
         <div id='runs'>
