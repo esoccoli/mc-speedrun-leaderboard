@@ -109,11 +109,13 @@ const getRecentRuns = async (req, res) => {
   const query = {};
 
   try {
-    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty verified').sort({ createdDate: 1 }).exec();
+    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty verified createdDate').sort({ createdDate: -1 }).limit(1)
+      .exec();
+    console.log(docs);
     return res.json({ recentRuns: docs });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Error retreiving runs! ' });
+    return res.status(500).json({ error: 'Error retreiving runs!' });
   }
 };
 

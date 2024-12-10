@@ -237,16 +237,54 @@ const GameStats = (props) => {
   );
 };
 
+const RecentRuns = (props) => {
+  const [recentRuns, setRecentRuns] = useState(props.recentRuns);
+
+  useEffect(() => {
+    const loadRunsFromServer = async () => {
+      const response = await fetch('/getRecentRuns');
+      const data = await response.json();
+      setRecentRuns(data.recentRuns);
+    };
+    loadRunsFromServer();
+  }, [props.reloadRuns]);
+
+  console.log(recentRuns);
+  const runNode = recentRuns.map((run, i) => {
+    time = `${run.timeHrs}h ${run.timeMins}m ${run.timeSecs}s ${run.timeMs}ms`;
+    return (
+      <div key={i} className={run}>
+        {/* <img src="/assets/img/domoface.jpeg" alt="domo face" className='domoFace' /> */}
+        {/* <div className='place'>{i + 1}</div> */}
+        <div className='runner'>{run.user}</div>
+        <div className='time'>{time}</div>
+        <div className='category'>{run.category}</div>
+        <div className='version'>{run.version}</div>
+        <div className='difficulty'>{run.difficulty}</div>
+        <div className='verified'>{run.verified ? 'True' : 'False'}</div>
+      </div>
+    );
+  });
+
+  return (
+    <Container>
+      {runNode}
+    </Container>
+  )
+};
+
 const App = () => {
   const [reloadRuns, setReloadRuns] = useState(false);
   const [reloadStats, setReloadStats] = useState(false);
+  const [reloadRecentRuns, setReloadRecentRuns] = useState(false);
 
   return (
     <div>
       <div id='submitRun'>
         <RunForm triggerReload={() => {
           setReloadRuns(!reloadRuns);
-          setReloadStats(!reloadStats)
+          setReloadStats(!reloadStats);
+          setReloadRecentRuns(!reloadRecentRuns)
         }} />
       </div>
       <div className='col-8'>
@@ -257,6 +295,9 @@ const App = () => {
       <div className='col-4'>
         <div id='stats'>
           <GameStats reloadStats={reloadStats} />
+        </div>
+        <div id='recentRuns'>
+          <RecentRuns recentRuns={[]} reloadRecentRuns={reloadRecentRuns} />
         </div>
       </div>
     </div>

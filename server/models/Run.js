@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const _ = require('underscore');
+// const _ = require('underscore');
 
-const setTime = (time) => _.escape(time).trim();
+// const setTime = (time) => _.escape(time).trim();
 
 const RunSchema = new mongoose.Schema({
   user: {
