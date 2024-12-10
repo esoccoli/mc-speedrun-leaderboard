@@ -44,6 +44,28 @@ const handleSignup = (e) => {
   return false;
 };
 
+const handleChangePass = (e) => {
+  e.preventDefault();
+  helper.hideError();
+
+  const username = e.target.querySelector('#user').value;
+  const pass = e.target.querySelector('#pass').value;
+  const pass2 = e.target.querySelector('#pass2').value;
+
+  if (!username || !pass || !pass2) {
+    helper.handleError('All fields are required');
+    return false;
+  }
+
+  if (pass !== pass2) {
+    helper.handleError('Passwords do not match');
+    return false;
+  }
+
+  helper.sendPost(e.target.action, { username, pass, pass2 });
+  return false;
+};
+
 // Displays the login screen and prompts user to enter their account info
 const LoginWindow = (props) => {
   return (
@@ -85,9 +107,29 @@ const SignupWindow = (props) => {
   );
 };
 
+const ChangePassword = (props) => {
+  return (
+    <form id='changePassForm'
+      name='changePass'
+      onSubmit={handleChangePass}
+      action='/changePass'
+      method='POST'
+      className='mainForm'>
+      <label htmlFor='username'>Username: </label>
+      <input type="text" name="username" id="user" placeholder='username' />
+      <label htmlFor="pass">Password: </label>
+      <input type="password" name="pass" id="pass" placeholder='password' />
+      <label htmlFor="pass2">Password: </label>
+      <input type="password" name="pass2" id="pass2" placeholder='retype password' />
+      <input type="submit" className="formSubmit" value="Change Password" />
+    </form>
+  );
+};
+
 const init = () => {
   const loginButton = document.getElementById('loginButton');
   const signupButton = document.getElementById('signupButton');
+  const changePassButton = document.getElementById('changePassButton');
 
   const root = createRoot(document.getElementById('content'));
 
@@ -100,6 +142,12 @@ const init = () => {
   signupButton.addEventListener('click', (e) => {
     e.preventDefault();
     root.render(<SignupWindow />);
+    return false;
+  });
+
+  changePassButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    root.render(<ChangePassword />);
     return false;
   });
 

@@ -1,6 +1,4 @@
-const { Model } = require('mongoose');
 const models = require('../models');
-const AccountModel = require('../models/Account');
 
 const { Account } = models;
 
@@ -59,34 +57,38 @@ const signup = async (req, res) => {
   }
 };
 
-// const changePass = async (req, res) => {
-//   const username = `${req.body.username}`;
-//   const newPass = `${req.body.newPass}`;
-//   const newPass2 = `${req.body.newPass2}`;
+const changePass = async (req, res) => {
+  const username = `${req.body.username}`;
+  const newPass = `${req.body.pass}`;
+  const newPass2 = `${req.body.pass2}`;
 
-//   if (!username || !newPass || !newPass2) {
-//     return res.status(400).json({ error: 'All fields are required!' });
-//   }
+  if (!username || !newPass || !newPass2) {
+    return res.status(400).json({ error: 'All fields are required!' });
+  }
 
-//   if (newPass !== newPass2) {
-//     return res.status(400).json({ error: 'Passwords do not match!' });
-//   }
+  if (newPass !== newPass2) {
+    return res.status(400).json({ error: 'Passwords do not match!' });
+  }
 
-//   try {
-//     const hash = await Account.generateHash(newPass);
-//     const newAccount = new Account({ username, password: hash });
-//     await newAccount.save();
-//     req.session.account = Account.toAPI(newAccount);
+  try {
+    const hash = await Account.generateHash(newPass);
 
-//     return res.json({ redirect: '/leaderboard' });
-//   } catch (err) {
-//     console.log(err);
-//     if (err.code === 11000) {
-//       return res.status(400).json({ error: 'Username already in use!' });
-//     }
-//     return res.status(500).json({ error: 'An error occured!' });
-//   }
-// }
+    const filter = { username };
+    const update = { password: hash };
+
+    const account = await Account.findOneAndUpdate(filter, update);
+    console.log(account);
+    // console.log(updatedAccount.password);
+    // const newAccount = new Account({ username, password: hash });
+    return res.json({ redirect: '/' });
+  } catch (err) {
+    console.log(err);
+    // if (err.code === 11000) {
+    //   return res.status(400).json({ error: 'Username already in use!' });
+    // }
+    return res.status(500).json({ error: 'An error occured!' });
+  }
+};
 
 const getNumUsers = async (req, res) => {
   const numUsers = await Account.countDocuments();
@@ -98,5 +100,6 @@ module.exports = {
   login,
   logout,
   signup,
+  changePass,
   getNumUsers,
 };
