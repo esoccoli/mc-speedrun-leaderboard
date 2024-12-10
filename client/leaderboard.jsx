@@ -1,11 +1,14 @@
 const { set } = require('mongoose');
 const helper = require('./helper.js');
 const React = require('react');
+const _ = require('underscore');
 
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
 const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Form, Table, Container } = require('reactstrap');
 // const { Form, Label, Input } = require('reactstrap');
+
+// import banner1 from '../hosted/img/banner-1.jpg';
 
 const handleNewSubmission = (e, onTimeSubmitted) => {
   e.preventDefault();
@@ -273,6 +276,43 @@ const RecentRuns = (props) => {
   )
 };
 
+const Advertisement = (props) => {
+
+  const images = [
+    '/assets/img/banner-1.jpg',
+    '/assets/img/banner-2.jpg',
+    '/assets/img/banner-3.jpg',
+    '/assets/img/banner-4.jpg',
+    '/assets/img/banner-5.jpg',
+    '/assets/img/banner-6.jpg'
+  ];
+
+  const [currImg, setCurrImg] = useState(images[0]);
+  const [isPremium, setIsPremium] = useState(false);
+
+  const toggleIsPremium = () => setIsPremium(!isPremium);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrImg(images[_.random(images.length - 1)]);
+    }, 15000)
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // const premiumToggle =
+  return (
+    <div>
+      <input type="checkbox" name="premium" id="togglePremium" onChange={toggleIsPremium} />
+      {
+        isPremium ?
+          <></> :
+          <img src={currImg} alt="imag" />
+      }
+    </div>
+  );
+};
+
 const App = () => {
   const [reloadRuns, setReloadRuns] = useState(false);
   const [reloadStats, setReloadStats] = useState(false);
@@ -280,6 +320,9 @@ const App = () => {
 
   return (
     <div>
+      <div className='ad'>
+        <Advertisement />
+      </div>
       <div id='submitRun'>
         <RunForm triggerReload={() => {
           setReloadRuns(!reloadRuns);

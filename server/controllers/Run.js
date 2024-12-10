@@ -68,7 +68,7 @@ const getRuns = async (req, res) => {
 
   // TODO: Change this to only retrieve the selected category
   if (!req.session.account.isAdmin) {
-    query = { category: req.body.category, verified: false };
+    query = { verified: false };
   } else {
     query = {};
   }
