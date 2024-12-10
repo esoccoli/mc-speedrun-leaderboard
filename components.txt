@@ -1,6 +1,7 @@
 A list of the dynamic react components I am going to have (and what makes them dynamic) for my own sanity
 
 [X] Stats - will display total # of submitted runs, total # of verified runs, total # of users. The component will detect when there are changes and refresh itself automatically
-[] Rules - will create a popup in the center of the page with rules. There will be a selector at the top to choose whether you want to see general or category rules, and switching between these will refresh the component dynamically
 [X] Recent Run - will show a list of the newest x runs submitted, and the info about them. This will refresh when new runs are submitted
 [X] Leaderboard - will show a list of all runs, sorted by time. Will refresh when new run is submitted.
+[X] Submit Form - has a button that always displays, and when that button is clicked, it toggles the visibility of the submission form. Submitting the form also toggles its visibility
+[X] Premium mode/Ads - have a checkbox to toggle between free and premium mode. when in free mode, there will be a banner with "ads" at the top of the page. Every 15 seconds a random image from the 6 i have saved is chosen and displayed
