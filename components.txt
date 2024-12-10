@@ -1,6 +1,6 @@
 A list of the dynamic react components I am going to have (and what makes them dynamic) for my own sanity
 
-1. Stats - will display total # of submitted runs, total # of verified runs, total # of users. The component will detect when there are changes and refresh itself automatically
-2. Rules - will create a popup in the center of the page with rules. There will be a selector at the top to choose whether you want to see general or category rules, and switching between these will refresh the component dynamically
-3. Recent Run - will show a list of the newest x runs submitted, and the info about them. This will refresh when new runs are submitted
-4. Leaderboard - will show a list of all runs, sorted by time. Will refresh when new run is submitted. Will also only show runs of the proper category, based on a category selector
+[X] Stats - will display total # of submitted runs, total # of verified runs, total # of users. The component will detect when there are changes and refresh itself automatically
+[] Rules - will create a popup in the center of the page with rules. There will be a selector at the top to choose whether you want to see general or category rules, and switching between these will refresh the component dynamically
+[X] Recent Run - will show a list of the newest x runs submitted, and the info about them. This will refresh when new runs are submitted
+[X] Leaderboard - will show a list of all runs, sorted by time. Will refresh when new run is submitted.
