@@ -14,6 +14,8 @@ const router = (app) => {
   app.get('/getRuns', mid.requiresLogin, controllers.Run.getRuns);
   app.get('/getPersonalRuns', mid.requiresLogin, controllers.Run.getPersonalRuns);
 
+  app.get('/getRecentRuns', mid.requiresLogin, controllers.Run.getRecentRuns);
+
   app.get('/leaderboard', mid.requiresLogin, controllers.Run.lbPage);
   app.post('/addRun', mid.requiresLogin, controllers.Run.addRun);
 

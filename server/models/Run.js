@@ -10,11 +10,21 @@ const RunSchema = new mongoose.Schema({
     trim: true,
     ref: 'Account',
   },
-  time: {
-    type: String,
+  timeHrs: {
+    type: Number,
     required: true,
-    trim: true,
-    set: setTime,
+  },
+  timeMins: {
+    type: Number,
+    required: true,
+  },
+  timeSecs: {
+    type: Number,
+    required: true,
+  },
+  timeMs: {
+    type: Number,
+    required: true,
   },
   /*
     Any% = Any Percent (just beat the game)
@@ -37,7 +47,7 @@ const RunSchema = new mongoose.Schema({
     enum: ['Easy', 'Normal', 'Hard', 'Hardcore', 'Peaceful'],
     required: true,
   },
-  verified: {
+  isPrivate: {
     type: Boolean,
     required: true,
     default: false,
@@ -50,11 +60,15 @@ const RunSchema = new mongoose.Schema({
 
 RunSchema.statics.toAPI = (doc) => ({
   user: doc.user,
-  time: doc.time,
+  timeHrs: doc.timeHrs,
+  timeMins: doc.timeMins,
+  timeSecs: doc.timeSecs,
+  timeMs: doc.timeMs,
   category: doc.category,
   version: doc.version,
   difficulty: doc.difficulty,
-  verified: doc.verified,
+  isPrivate: doc.isPrivate,
+  createdDate: doc.createdDate,
 });
 
 const RunModel = mongoose.model('Run', RunSchema);

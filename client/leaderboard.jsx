@@ -18,69 +18,47 @@ const handleNewSubmission = (e, onTimeSubmitted) => {
   const timeSecs = e.target.querySelector('#seconds').value;
   const timeMs = e.target.querySelector('#milliseconds').value;
 
-  let time = '';
-
-  if (timeHrs !== 0) {
-    time += `${timeHrs}:`;
-  }
-  time += `${timeMins}:${timeSecs}.${timeMs}`;
-
   // const time = e.target.querySelector('#completionTime').value;
   const category = e.target.querySelector('#category').value;
   const version = e.target.querySelector('#version').value;
   const difficulty = e.target.querySelector('#difficulty').value;
   const verified = false;
 
-  console.log(`timeHrs: ${timeHrs}`);
-  console.log(`timeMins: ${timeMins}`);
-  console.log(`timeSecs: ${timeSecs}`);
-  console.log(`timeMs: ${timeMs}`);
-  console.log(`category: ${category}`);
-  console.log(`version: ${version}`);
-  console.log(`difficulty: ${difficulty}`);
+  // console.log(`timeHrs: ${timeHrs}`);
+  // console.log(`timeMins: ${timeMins}`);
+  // console.log(`timeSecs: ${timeSecs}`);
+  // console.log(`timeMs: ${timeMs}`);
+  // console.log(`category: ${category}`);
+  // console.log(`version: ${version}`);
+  // console.log(`difficulty: ${difficulty}`);
 
   if (!timeHrs || !timeMins || !timeSecs || !timeMs || !category || !version || !difficulty) {
     helper.handleError('All fields are required');
     return false;
   }
 
-  helper.sendPost(e.target.action, { time, category, version, difficulty, verified }, onTimeSubmitted);
+  helper.sendPost(e.target.action, { timeHrs, timeMins, timeSecs, timeMs, category, version, difficulty, verified }, onTimeSubmitted);
   return false;
 };
 
-const handleDomo = (e, onDomoAdded) => {
-  e.preventDefault();
-  helper.hideError();
-
-  const name = e.target.querySelector('#domoName').value;
-  const age = e.target.querySelector('#domoAge').value;
-  const nickname = e.target.querySelector('#domoNickname').value;
-
-  if (!name || !age || !nickname) {
-    helper.handleError('All fields are required');
-    return false;
-  }
-
-  helper.sendPost(e.target.action, { name, age, nickname }, onDomoAdded);
-  return false;
-};
-
-// const handleDelete = (e, onDomoDeleted) => {
+// const handleDomo = (e, onDomoAdded) => {
 //   e.preventDefault();
 //   helper.hideError();
 
-//   const name = e.target.querySelector('#delDomoName').value;
-//   const nickname = e.target.querySelector("#delDomoNickname").value;
-//   const age = e.target.querySelector("#delDomoAge").value;
+//   const name = e.target.querySelector('#domoName').value;
+//   const age = e.target.querySelector('#domoAge').value;
+//   const nickname = e.target.querySelector('#domoNickname').value;
 
-//   if (!name || !nickname || !age) {
-//     helper.handleError('All fields are required.');
+//   if (!name || !age || !nickname) {
+//     helper.handleError('All fields are required');
 //     return false;
 //   }
 
-//   helper.sendDelete(e.target.action, { name, age, nickname }, onDomoDeleted);
+//   helper.sendPost(e.target.action, { name, age, nickname }, onDomoAdded);
 //   return false;
-// }
+// };
+
+
 const RunForm = (props) => {
 
   const [modal, setModal] = useState(false);
@@ -185,13 +163,14 @@ const RunList = (props) => {
     );
   }
 
-  const runNode = runs.map(run => {
+  const runNode = runs.map((run, i) => {
+    time = `${run.timeHrs}h ${run.timeMins}m ${run.timeSecs}s ${run.timeMs}ms`;
     return (
-      <tr key={run.id} className='run'>
+      <tr key={i} className={run}>
         {/* <img src="/assets/img/domoface.jpeg" alt="domo face" className='domoFace' /> */}
-        <td className='place'>{run.id}</td>
+        <td className='place'>{i + 1}</td>
         <td className='runner'>{run.user}</td>
-        <td className='time'>{run.time}</td>
+        <td className='time'>{time}</td>
         <td className='category'>{run.category}</td>
         <td className='version'>{run.version}</td>
         <td className='difficulty'>{run.difficulty}</td>
