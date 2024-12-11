@@ -1,11 +1,12 @@
-1. The purpose of this application is to display a leaderboard of the fastest Minecraft completion times
-2. I removed most of the references to domos and started replacing the content from domomaker with the appropriate content for this app
-3. I still have to make the leaderboard page, the password change functionality, and test the submission form (redis doesnt like when i dont have wifi bc bus... who knew) I also have to implement my profit model. I plan to spend at least a little time each day working on this so that I am able to get everything done on time, and am not cramming it on the last day or 2.
-4. I am using react to display the leaderboard, and update it dynamically when new times are submitted. I am also using react to dynamically switch the display on the leaderboard based on the selected category. I have made a component for the submission form, and a component for displaying the leaderboard. I still plan to add a component for each of the leaderboard categories, and a component for a leaderboard entry. I also might make a react component for a block of the page and a placeholder ad in the middle
-5. I am storing accounts and time submissions in Mongodb. I have set it up for storing all the data I plan to store
-6. My profit model will be ads on the page, and a premium mode that disables the ads. I have not implemented it yet, but I plan to do that by making a react compont for an ad and then adding it to a few places on the page
-7. I plan to go above and beyond by making more than the required number of react components. Other than that, i dont know... ill figure it out when i get there.
+1. The purpose of my application is to provide a place for people to keep trakc of their speedrun times for minecraft speedruns
+2. I am using react for most of my client code. I have a component for the run submission form, a component to display the most recently submitted run, a component to display game stats, a component to display the leaderboard, and a component for ads for my profit model
+3. I am storing account information and run information in mongodb
+4. I was able to get all my functionality done with not too much difficulty, and development went pretty smoothly overall
+5. I was overloaded with work from all my classes over the past 2 weeks, and didnt have much time to work on this, leading to me needing to cram all the work during the last few days. I was luckily able to spend pretty much all day for 3 days straight on this, but they were all long days (8 hrs Sat, 8 hrs Sun, 16 hrs Tues)
+6. I learned that time management is very important, but i also learned that time management is hard to do when you have 6 classes and 5 of them give large projects all due at the same time
+7. If i were to continue, I would want to further improve the stylesheet, add category filters so that the leaderboard only displays records from a particular category, and also split the information about a run into more distinctions, as well as adding more information to the board
 8. No
+9. No.
 
 Endpoint documentation
 
@@ -23,8 +24,53 @@ Query params: the currently signed in user
 Description: retreives a list of runs that the current user has submitted
 Return type: json
 
-/submitTime
+/addRun
 Supported method: post
 middleware: requires login
 query params: time, category, version, difficulty
 description: creates a new entry in the database with a new run
+
+/getRecentRuns
+Supported Methods: post
+middleware: requires login
+query params: none
+description: retreives the most recently submitted run
+
+/getNumUsers
+supported methods: GET
+middleware: requires login
+query params: none
+description: gets the total number of users that exist in the database
+return: json
+
+/getNumSubmissions
+supported methods: get
+middleware: requires login
+query params: none
+description: retreives the total number of submissions saved in the database
+return: json
+
+/leaderboard
+supported methods: GET
+middleware: requires login
+query params: none
+description: retreives the leaderboard page
+return: html
+
+/signup
+supported methods: post
+middleware: requires secure, logout
+query params: username, password, isAdmin
+description: creates a new user
+
+/login
+supported methods: get, post
+middleware: requires secure, logout
+query params: get => none, post => username, password
+description: get => retreives the login page, post => authenticates the user and signs them in
+
+/changePass
+supported methods: post
+middleware: requires secure, logout
+query params: username, new password
+description: changes the password for a particular user
