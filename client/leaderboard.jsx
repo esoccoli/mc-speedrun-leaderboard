@@ -5,8 +5,9 @@ const _ = require('underscore');
 
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
-const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Table, Container } = require('reactstrap');
+const { Modal, ModalBody, Button, ModalHeader, Input, InputGroup, Label, Table, Container } = require('reactstrap');
 
+// Pulls the data about the run from the form and sends a request to the server to store the data
 const handleNewSubmission = (e, onTimeSubmitted) => {
   e.preventDefault();
   helper.hideError();
@@ -19,16 +20,13 @@ const handleNewSubmission = (e, onTimeSubmitted) => {
   const category = e.target.querySelector('#category').value;
   const version = e.target.querySelector('#version').value;
   const difficulty = e.target.querySelector('#difficulty').value;
-  const isPrivate = e.target.querySelector('#isPrivate').checked;
-
-  console.log(isPrivate);
 
   if (!timeHrs || !timeMins || !timeSecs || !timeMs || !category || !version || !difficulty) {
     helper.handleError('All fields are required');
     return false;
   }
 
-  helper.sendPost(e.target.action, { timeHrs, timeMins, timeSecs, timeMs, category, version, difficulty, isPrivate }, onTimeSubmitted);
+  helper.sendPost(e.target.action, { timeHrs, timeMins, timeSecs, timeMs, category, version, difficulty }, onTimeSubmitted);
   return false;
 };
 
@@ -40,10 +38,12 @@ const RunForm = (props) => {
   const toggleSubmitForm = () => setModal(!modal);
   return (
     <>
-      <Button color="success" onClick={toggleSubmitForm}>Submit</Button>
+      <div className='submitBtn'>
+        <Button color="success" onClick={toggleSubmitForm}>Submit Run</Button>
+      </div>
       <Modal isOpen={modal} toggle={toggleSubmitForm}>
-        <ModalHeader toggle={toggleSubmitForm}>Submit Run</ModalHeader>
-        <ModalBody>
+        <ModalHeader toggle={toggleSubmitForm} className='modalHead'>Submit Run</ModalHeader>
+        <ModalBody className='modalBody'>
           <form id='submissionForm'
             onSubmit={(e) => {
               toggleSubmitForm();
@@ -60,15 +60,15 @@ const RunForm = (props) => {
                 <Label htmlFor='hours'>&nbsp; h &nbsp;</Label>
                 <Input id='minutes' type='number' min={0} max={59} name='minutes' required />
                 <Label htmlFor='minutes'>&nbsp; m &nbsp;</Label>
-                <Input id='seconds' type="number" min={0} max={59} name='seconds' required />
+                <Input id='seconds' type='number' min={0} max={59} name='seconds' required />
                 <Label htmlFor="seconds">&nbsp; s &nbsp;</Label>
-                <Input id='milliseconds' type="number" name="milliseconds" min={0} max={999} required />
+                <Input id='milliseconds' type='number' name="milliseconds" min={0} max={999} required />
                 <Label htmlFor="milliseconds"> &nbsp; ms &nbsp;</Label>
               </InputGroup>
             </div>
 
             {/* Run category */}
-            <div id='runCategory'>
+            <div id='runCategory' className='labeled-select'>
               <Label htmlFor='category'>Category: &nbsp; </Label>
               <select id='category' type='select' name='category' placeholder='Any% RSG'>
                 <option value="Any% RSG">Any% RSG</option>
@@ -79,7 +79,7 @@ const RunForm = (props) => {
             </div>
 
             {/* Game version */}
-            <div id='gameVersion'>
+            <div className='labeled-select' id='gameVersion'>
               <Label htmlFor='version'>Version: &nbsp;</Label>
               <select name="version" id="version">
                 <option value="Pre 1.8">Pre 1.8</option>
@@ -91,8 +91,8 @@ const RunForm = (props) => {
             </div>
 
             {/* Game difficulty */}
-            <div id='gameDifficulty'>
-              <Label htmlFor='difficulty'>Difficulty: </Label>
+            <div id='gameDifficulty' className='labeled-select'>
+              <Label htmlFor='difficulty'>Difficulty: &nbsp; </Label>
               <select name="difficulty" id="difficulty">
                 <option value="Easy">Easy</option>
                 <option value="Normal">Normal</option>
@@ -102,22 +102,12 @@ const RunForm = (props) => {
               </select>
             </div>
 
-            <div id='submissionPrivacy'>
-              <Label htmlFor="isPrivate">Private? &nbsp;</Label>
-              <input type='checkbox' name='isPrivate' id='isPrivate' />
-            </div>
             <Button type='submit' color="success" className='btn' onSubmit={(e) => handleNewSubmission(e, props.triggerReload)}>
               Submit
             </Button>
           </form>
         </ModalBody>
-        <ModalFooter>
-          {' '}
-          <Button color="secondary" onClick={toggleSubmitForm}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
+      </Modal >
     </>
   );
 };
@@ -134,6 +124,7 @@ const RunList = (props) => {
     loadRunsFromServer();
   }, [props.reloadRuns]);
 
+  // If there are no runs, displays a message to the user saying that
   if (runs.length === 0) {
     return (
       <div className='runList'>
@@ -142,6 +133,7 @@ const RunList = (props) => {
     );
   }
 
+  // Displays each run and its data in a table
   const runNode = runs.map((run, i) => {
     time = `${run.timeHrs}h ${run.timeMins}m ${run.timeSecs}s ${run.timeMs}ms`;
     return (
@@ -152,14 +144,13 @@ const RunList = (props) => {
         <td className='category'>{run.category}</td>
         <td className='version'>{run.version}</td>
         <td className='difficulty'>{run.difficulty}</td>
-        <td className='isPrivate'>{run.isPrivate}</td>
       </tr>
     );
   });
 
   return (
     <div className='runList'>
-      <Table color='success'>
+      <Table color='success' className='has-text-centered resultsTable'>
         <thead>
           <tr>
             <th>Place</th>
@@ -168,7 +159,6 @@ const RunList = (props) => {
             <th>Category</th>
             <th>Version</th>
             <th>Difficulty</th>
-            <th>Private</th>
           </tr>
         </thead>
         <tbody>
@@ -185,6 +175,7 @@ const GameStats = (props) => {
   const [numUsers, setNumUsers] = useState(false);
   const [numSubmissions, setNumSubmissions] = useState(false);
 
+  // Send a request for the total # of users
   useEffect(() => {
     const getNumUsers = async () => {
       const response = await fetch('/getNumUsers');
@@ -194,6 +185,7 @@ const GameStats = (props) => {
     getNumUsers();
   }, [props.reloadStats]);
 
+  // Send a request for the total # of submissions
   useEffect(() => {
     const getNumSubmissions = async () => {
       const response = await fetch('/getNumSubmissions');
@@ -204,17 +196,13 @@ const GameStats = (props) => {
   }, [props.reloadStats]);
 
   return (
-    <div id='gameStats' className='margin-sides'>
-      <div className='has-text-black has-text-centered'>
-        Game Stats
-      </div>
-      <div className='has-text-centered has-text-black'>
-        <div>
-          Users: {numUsers}
-        </div>
-        <div>
-          Submissions: {numSubmissions}
-        </div>
+    <div id='gameStats'>
+      <h3>Game Stats</h3>
+      <div id='statNode'>
+        <table className='stats'>
+          <tr className='numUsers'><th>Users</th><td>{numUsers}</td></tr>
+          <tr className='numSubmissions'><th>Submissions</th><td>{numSubmissions}</td></tr>
+        </table>
       </div>
     </div>
   );
@@ -223,6 +211,7 @@ const GameStats = (props) => {
 const RecentRuns = (props) => {
   const [recentRuns, setRecentRuns] = useState(props.recentRuns);
 
+  // Sends a request to the server for the information about the most recently submitted run
   useEffect(() => {
     const loadRunsFromServer = async () => {
       const response = await fetch('/getRecentRuns');
@@ -232,23 +221,25 @@ const RecentRuns = (props) => {
     loadRunsFromServer();
   }, [props.reloadRuns]);
 
-  console.log(recentRuns);
+  // Displays the info about the run in a table form for ease of readability
   const runNode = recentRuns.map((run, i) => {
     time = `${run.timeHrs}h ${run.timeMins}m ${run.timeSecs}s ${run.timeMs}ms`;
     return (
       <div key={i} className={run} id='runNode'>
-        <div className='runner'>User: {run.user}</div>
-        <div className='time'>Time: {time}</div>
-        <div className='category'>Category: {run.category}</div>
-        <div className='version'>Version: {run.version}</div>
-        <div className='difficulty'>Difficulty: {run.difficulty}</div>
+        <table className='runData'>
+          <tr className='runner'><th>User</th><td>{run.user}</td></tr>
+          <tr className='time'><th>Time</th><td>{time}</td></tr>
+          <tr className='category'><th>Category</th><td>{run.category}</td></tr>
+          <tr className='version'><th>Version</th><td>{run.version}</td></tr>
+          <tr className='difficulty'><th>Difficulty</th><td>{run.difficulty}</td></tr>
+        </table>
       </div>
     );
   });
 
   return (
     <div className='recentRun margin-sides has-text-centered is-half-width has-text-black margin-top'>
-      <h3 className='has-text-weight-bold is-half'>Recent Run</h3>
+      <h3>Recent Run</h3>
       {runNode}
     </div>
   )
@@ -257,6 +248,7 @@ const RecentRuns = (props) => {
 // Displays an ad on the page (as well as the premium toggle)
 const Advertisement = () => {
 
+  // List containing the file path to each image that can appear as a placeholder ad
   const images = [
     '/assets/img/banner-1.jpg',
     '/assets/img/banner-2.jpg',
@@ -271,25 +263,30 @@ const Advertisement = () => {
 
   const toggleIsPremium = () => setIsPremium(!isPremium);
 
+  // Changes the image that is displayed every 15 seconds (15000 milliseconds)
   useEffect(() => {
-    const interval = setInterval(() => {
+    const delay = setInterval(() => {
       setCurrImg(images[_.random(images.length - 1)]);
     }, 15000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(delay);
   }, []);
 
+  // Displays a checkbox that controls whether the user has premium mode or not
+  // Displays a banner image (ie: an ad) if the user does not have premium (or nothing if they do)
   return (
-    <Container className='container is-centered has-background-green block'>
-      <div className='is-size-5 has-text-black'>
-        <label htmlFor='premium'>Premium? &nbsp; </label>
-        <input type="checkbox" name="premium" id="toggle-premium" className='checkbox is-size-5' onChange={toggleIsPremium} />
+    <Container className='container is-centered'>
+      <div className='premiumMode'>
+        <label htmlFor='premium'>Premium? </label>
+        <input type="checkbox" name="premium" id="toggle-premium" className='checkbox' onChange={toggleIsPremium} />
       </div>
-      {
-        isPremium ?
-          <></> :
-          <img className='image' src={currImg} alt="imag" />
-      }
+      <div className='img-container'>
+        {
+          isPremium ?
+            <></> :
+            <img className='image' src={currImg} alt="imag" />
+        }
+      </div>
     </Container>
   );
 };
@@ -302,7 +299,7 @@ const App = () => {
   return (
     <div>
       <div className='ad'>
-        <Advertisement className='smaller' />
+        <Advertisement />
       </div>
       <div id='submitRun'>
         <RunForm triggerReload={() => {
@@ -316,11 +313,11 @@ const App = () => {
           <RunList runs={[]} reloadRuns={reloadRuns} className='left-margin' />
         </div>
       </div>
-      <div id='stats is-inline-flex'>
-        <GameStats reloadStats={reloadStats} className='is-flex' />
-        <RecentRuns recentRuns={[]} reloadRecentRuns={reloadRecentRuns} className='is-flex' />
+      <div id='stats'>
+        <GameStats reloadStats={reloadStats} />
       </div>
       <div id='recentRuns'>
+        <RecentRuns recentRuns={[]} reloadRecentRuns={reloadRecentRuns} />
       </div>
     </div>
   );

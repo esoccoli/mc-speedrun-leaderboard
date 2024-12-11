@@ -44,12 +44,6 @@ const RunSchema = new mongoose.Schema({
     enum: ['Easy', 'Normal', 'Hard', 'Hardcore', 'Peaceful'],
     required: true,
   },
-  isPrivate: {
-    type: String,
-    enum: ['True', 'False'],
-    required: true,
-    default: false,
-  },
   createdDate: {
     type: Date,
     default: Date.now(),
@@ -65,7 +59,6 @@ RunSchema.statics.toAPI = (doc) => ({
   category: doc.category,
   version: doc.version,
   difficulty: doc.difficulty,
-  isPrivate: doc.isPrivate,
   createdDate: doc.createdDate,
 });
 

@@ -97,7 +97,7 @@ const SignupWindow = (props) => {
       <input id="user" type="text" name="username" placeholder="username" />
       <label htmlFor="pass">Password: </label>
       <input id="pass" type="password" name="pass" placeholder="password" />
-      <label htmlFor="pass">Password: </label>
+      <label htmlFor="pass">Retype Password: </label>
       <input id="pass2" type="password" name="pass2" placeholder="retype password" />
       <label htmlFor="isAdmin">Admin? &nbsp;</label>
       <input type="hidden" name="isAdmin" value={false} />
@@ -119,7 +119,7 @@ const ChangePassword = (props) => {
       <input type="text" name="username" id="user" placeholder='username' />
       <label htmlFor="pass">Password: </label>
       <input type="password" name="pass" id="pass" placeholder='password' />
-      <label htmlFor="pass2">Password: </label>
+      <label htmlFor="pass2">Retype Password: </label>
       <input type="password" name="pass2" id="pass2" placeholder='retype password' />
       <input type="submit" className="formSubmit" value="Change Password" />
     </form>

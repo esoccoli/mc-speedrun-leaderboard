@@ -1,6 +1,6 @@
-1. The purpose of my application is to provide a place for people to keep trakc of their speedrun times for minecraft speedruns
+1. The purpose of my application is to provide a place for people to keep track of their speedrun times for minecraft speedruns, and see how their times compare to other peoples' times
 2. I am using react for most of my client code. I have a component for the run submission form, a component to display the most recently submitted run, a component to display game stats, a component to display the leaderboard, and a component for ads for my profit model
-3. I am storing account information and run information in mongodb
+3. I am storing account information (username => string, hashed password => string, created date => timestamp, is admin => boolean) and run information (user => string ref to account, time => combines a number for each of hours, minutes, seconds, & milliseconds, category => enum, version => enum, difficulty => enum)
 4. I was able to get all my functionality done with not too much difficulty, and development went pretty smoothly overall
 5. I was overloaded with work from all my classes over the past 2 weeks, and didnt have much time to work on this, leading to me needing to cram all the work during the last few days. I was luckily able to spend pretty much all day for 3 days straight on this, but they were all long days (8 hrs Sat, 8 hrs Sun, 16 hrs Tues)
 6. I learned that time management is very important, but i also learned that time management is hard to do when you have 6 classes and 5 of them give large projects all due at the same time

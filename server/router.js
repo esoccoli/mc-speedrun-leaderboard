@@ -24,6 +24,7 @@ const router = (app) => {
   app.get('/getNumUsers', mid.requiresLogin, controllers.Account.getNumUsers);
   app.get('/getNumSubmissions', mid.requiresLogin, controllers.Run.getNumSubmissions);
 
+  // Redirects requests sent to any route other than the ones about back to '/'
   app.get('*', (req, res) => res.redirect('/'));
 };
 

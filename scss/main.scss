@@ -16,10 +16,7 @@
   bundle. In this case, we are importing the contents of other.scss
   into this file.
 */
-body {
-  background-color: green;
-}
-
+@use 'other';
 /*With sass we can also define variables like the two below. We can
   then use these variables in place of where we might use their values.
   For example, anywhere that I want to set the color of an element,
@@ -29,11 +26,18 @@ body {
   me to replace the color throughout a massive stylesheet with only one
   change.
 */
+$contrastColor: cornflowerblue;
+$appWidth: 200px;
+
 /*Sass also lets us define functions. These functions can be helpful for
   precomputing values as we compile our sass to css. Because pure css
   cannot execute functions like javascript can, the functions in sass
   will be evaluated to static values at compile time.
 */
+@function calcDivMargin($width) {
+  @return calc($width / 4);
+}
+
 html,
 body {
   height: 100%;
@@ -52,23 +56,28 @@ body {
   width: 50%;
   margin: 0 auto;
   text-align: center;
-}
-#app div {
-  margin-top: 50px;
-}
-#app div h1 {
-  color: cornflowerblue;
-}
-#app div h2 i {
-  color: cornflowerblue;
-}
-#app div ul {
-  width: 200px;
-  margin: 0 auto;
-  text-align: left;
-}
-#app div ul li {
-  margin-top: 10px;
-  word-break: break-all;
-  font-size: 1.1em;
+
+  div {
+    margin-top: calcDivMargin($appWidth);
+
+    h1 {
+      color: $contrastColor;
+    }
+
+    h2 i {
+      color: $contrastColor;
+    }
+
+    ul {
+      width: $appWidth;
+      margin: 0 auto;
+      text-align: left;
+
+      li {
+        margin-top: 10px;
+        word-break: break-all;
+        font-size: 1.1em;
+      }
+    }
+  }
 }

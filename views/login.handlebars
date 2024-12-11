@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <title>MCSR Leaderboard</title>
   <link rel="shortcut icon" href="/assets/img/favicon.ico" />
-  <link rel="stylesheet" type="text/css" href="/assets/main.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.css"
     integrity="sha512-SI0aF82pT58nyOjCNfyeE2Y5/KHId8cLIX/1VYzdjTRs0HPNswsJR+aLQYSWpb88GDJieAgR4g1XWZvUROQv1A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-  <nav class="margin-sides">
+  <nav>
     <div class="navlink"><a id="loginButton" href="/login">Login</a></div>
     <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
     <div class="navlink"><a id="changePassButton" href="/changePass">Change Password</a></div>
@@ -20,6 +20,12 @@
   <section id="content">
 
   </section>
+
+  <div id="message" class='hidden'>
+    <img id="speech" src="/assets/img/speech.png" alt="speech box" />
+    <h3><span id="errorMessage"></span></h3>
+    <img id="creeper" src="assets/img/creeper.png" alt="creeper" />
+  </div>
   <script src="/assets/loginBundle.js"></script>
 </body>
 

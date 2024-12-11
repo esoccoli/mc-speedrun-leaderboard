@@ -11,6 +11,7 @@ const { Run } = models;
 */
 const lbPage = async (req, res) => res.render('app');
 
+// Gets the data about a run from the form and saves it to the database
 const addRun = async (req, res) => {
   if (
     !req.body.timeHrs
@@ -32,7 +33,6 @@ const addRun = async (req, res) => {
     category: req.body.category,
     version: req.body.version,
     difficulty: req.body.difficulty,
-    isPrivate: req.body.isPrivate,
   };
 
   try {
@@ -48,28 +48,19 @@ const addRun = async (req, res) => {
       category: newRun.category,
       version: newRun.version,
       difficulty: newRun.difficulty,
-      isPrivate: newRun.isPrivate,
     });
   } catch (err) {
     console.log(err);
-
-    // Currently dont care about duplicates, might change that later
     return res.status(500).json({ error: 'An error occured while saving completion info!' });
   }
 };
 
 // Gets all completions matching the specified request parameters
 const getRuns = async (req, res) => {
-  let query = {};
-
-  if (!req.session.account.isAdmin) {
-    query = { isPrivate: 'False' };
-  } else {
-    query = {};
-  }
+  const query = {};
 
   try {
-    const docs = (await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty isPrivate').sort({
+    const docs = (await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty').sort({
       timeHrs: 1, timeMins: 1, timeSecs: 1, timeMs: 1,
     }).exec());
 
@@ -85,7 +76,7 @@ const getPersonalRuns = async (req, res) => {
   const query = { user: req.session.account.user };
 
   try {
-    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty isPrivate').exec();
+    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty').exec();
 
     return res.json({ runs: docs });
   } catch (err) {
@@ -105,9 +96,8 @@ const getRecentRuns = async (req, res) => {
   const query = {};
 
   try {
-    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty isPrivate createdDate').sort({ createdDate: -1 }).limit(1)
+    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty createdDate').sort({ createdDate: -1 }).limit(1)
       .exec();
-    console.log(docs);
     return res.json({ recentRuns: docs });
   } catch (err) {
     console.log(err);

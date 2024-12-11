@@ -6,7 +6,6 @@ const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
-const helmet = require('helmet');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const redis = require('redis');
@@ -31,17 +30,6 @@ redisClient.on('error', (err) => console.log('Redis Client Error', err));
 redisClient.connect().then(() => {
   const app = express();
 
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        scriptSrc: ["'self'", 'blob:', 'cdn.jsdelivr.net'],
-        styleSrc: ["'self'", 'cdn.jsdelivr.net', 'blob:'],
-      },
-      defaultSrc: [
-        "'self'", 'blob:', 'cdn.jsdelivr.net',
-      ],
-    },
-  }));
   app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
   app.use(favicon(`${__dirname}/../hosted/img/favicon.ico`));
   app.use(compression());

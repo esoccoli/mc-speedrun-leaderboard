@@ -2,13 +2,17 @@ const models = require('../models');
 
 const { Account } = models;
 
+// Displays the html page for login/signup/change password
 const loginPage = (req, res) => res.render('login');
 
+// Signs the user out of their account and deletes the session from redis
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
 };
 
+// Checks the login info in the form, validates it against existing accounts,
+// and signs the user in, if the info is valid
 const login = (req, res) => {
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
@@ -27,6 +31,8 @@ const login = (req, res) => {
   });
 };
 
+// Gets account information from the form, validates it as needed,
+// and then creates an account with that information in the database
 const signup = async (req, res) => {
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
@@ -57,6 +63,9 @@ const signup = async (req, res) => {
   }
 };
 
+// Checks the information in the form, validates it as necessary,
+// and then updates the password for the specified user to the
+// newly provided password (after hashing it)
 const changePass = async (req, res) => {
   const username = `${req.body.username}`;
   const newPass = `${req.body.pass}`;
@@ -85,6 +94,7 @@ const changePass = async (req, res) => {
   }
 };
 
+// Gets a count of the number of accounts that exist in the database
 const getNumUsers = async (req, res) => {
   const numUsers = await Account.countDocuments();
   return res.status(200).json({ numUsers });

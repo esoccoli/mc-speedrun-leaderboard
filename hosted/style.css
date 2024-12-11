@@ -1,6 +1,6 @@
 html,
 body {
-    background-color: lightgreen;
+    background-color: white;
     margin: 0;
     padding: 0;
 }
@@ -12,12 +12,13 @@ nav {
 }
 
 .navlink {
+    display: block;
+    height: inherit;
     padding: 5px;
     padding-left: 20px;
     color: white;
     font-size: 1.3em;
     float: left;
-    margin-bottom: 5px;
 }
 
 
@@ -30,6 +31,7 @@ nav:nth-child(1) {
 .navlink a:visited,
 .navlink a:hover,
 .navlink a:active {
+    display: block;
     color: white;
     text-decoration: none;
     padding: 5px;
@@ -38,9 +40,10 @@ nav:nth-child(1) {
     transition: background-color 0.4s ease;
 }
 
-.navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #66bdff;
+.navlink a:hover,
+.navlink a:active {
+    background-color: rgb(5, 87, 25);
+    color: white;
 }
 
 #logo {
@@ -55,12 +58,7 @@ nav:nth-child(1) {
     margin-left: 3em;
 }
 
-.statsContainer {
-    display: block;
-}
-
 .statsBlock {
-    display: block;
     background-color: rgba(0, 255, 0, 0.78);
     justify-content: center;
     padding: 2px;
@@ -75,15 +73,64 @@ nav:nth-child(1) {
     margin-right: 20em;
 }
 
+#statNode,
 #runNode {
     justify-content: center;
     font: 28px;
 }
 
-.recentRun,
 #gameStats {
-    background-color: rgba(25, 255, 25, 0.8);
-    font-size: 24px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: lightgreen;
+    padding-bottom: 10px;
+}
+
+.recentRun {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: lightgreen;
+    padding-bottom: 10px;
+}
+
+#gameStats h3,
+.recentRun h3 {
+    background-color: green;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+#gameStats tr,
+.recentRun tr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.stats,
+.runData {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 14pt;
+}
+
+.stats th,
+.runData th {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.stats td,
+.runData td {
+    text-align: left;
+    padding-left: 10px;
 }
 
 .has-text-black {
@@ -92,4 +139,197 @@ nav:nth-child(1) {
 
 .has-text-centered {
     justify-content: center;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+#message {
+    top: 250px;
+    width: 250px;
+    height: 650px;
+    position: absolute;
+    z-index: 200;
+    right: 0px;
+    overflow: hidden;
+}
+
+#message h3 {
+    width: 200px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.5em;
+}
+
+#speech {
+    height: 220px;
+    width: 350px;
+    z-index: 300;
+}
+
+#errorMessage {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: red;
+    font-style: italic;
+}
+
+#creeper {
+    z-index: 225;
+    margin-top: -20px;
+    margin-left: 135px;
+    height: 450px;
+    width: 300px;
+    -ms-transform: rotate(330deg);
+    -webkit-transform: rotate(330deg);
+    transform: rotate(330deg);
+}
+
+.creeper {
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border: 2px solid #55acee;
+    border-radius: 4px;
+    background-color: #55acee;
+    padding: 10px;
+    min-height: 60px;
+    overflow: hidden;
+}
+
+.float-right {
+    float: right;
+}
+
+.mainForm {
+    height: 100%;
+    width: 500px;
+    margin: 0 auto;
+    padding-top: 3em;
+    font-size: 1.5em;
+    display: block;
+    background-color: inherit;
+}
+
+.mainForm input[type=text],
+.mainForm input[type=password] {
+    width: 500px;
+    height: 50px;
+    color: black;
+    display: block;
+    font-size: 0.8em;
+}
+
+.mainForm input[type=submit] {
+    width: 200px;
+    height: 40px;
+    margin: 10px 0;
+    background-color: green;
+    color: white;
+    border: 1px solid green;
+    box-shadow: 5px 5px 1px rgba(0, 200, 50, 0.37);
+    display: block;
+    font-size: 1em;
+}
+
+.mainForm input[type=submit]:hover {
+    background-color: rgba(8, 165, 8, 0.8);
+    border: 1px solid rgba(8, 165, 8, 0.8);
+    box-shadow: 3px 2px 1px rgba(0, 200, 50, 0.37);
+}
+
+.mainForm input[type=submit]:active {
+    background-color: green;
+    color: white;
+}
+
+.mainform input[type=checkbox] {
+    width: 30px;
+    height: 30px;
+    margin-top: 15px;
+}
+
+.mainForm h3 {
+    text-align: center;
+}
+
+.mainForm label {
+    display: inline-block;
+    width: fit-content;
+    margin-right: 10px;
+    text-align: right;
+    font-size: 1.2em;
+    color: black;
+}
+
+.modalHead {
+    background-color: green;
+    color: white;
+    font-size: 1.5em;
+}
+
+#completionTime {
+    margin: 10px;
+}
+
+.modalBody {
+    background-color: lightgreen;
+    color: black;
+}
+
+.modalBody input[type=number] {
+    background-color: honeydew;
+    color: black;
+    border: 1px solid honeydew;
+}
+
+.modalBody select,
+.modalBody option {
+    background-color: honeydew;
+    border: 1px solid honeydew;
+    width: 100px;
+}
+
+.modalBody button {
+    background-color: green;
+}
+
+.modalBody button:hover,
+.modalBody button:active {
+    background-color: darkgreen;
+}
+
+.modalFooter {
+    background-color: lightblue;
+}
+
+.submitBtn {
+    margin: 10px;
+}
+
+#stats {
+    display: inline-flex;
+    width: 100%;
+    top: 0px;
+}
+
+.premiumMode input[type=checkbox] {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+}
+
+.premiumMode label {
+    font-size: 18pt;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.img-container {
+    margin-left: auto;
+    margin-right: auto;
 }
