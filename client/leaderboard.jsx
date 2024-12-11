@@ -117,7 +117,7 @@ const RunForm = (props) => {
             Cancel
           </Button>
         </ModalFooter>
-      </Modal >
+      </Modal>
     </>
   );
 };

@@ -34,11 +34,11 @@ redisClient.connect().then(() => {
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
-        scriptSrc: ["'self'", "'blob", "'cdn.jsdeliver.net"],
-        styleSrc: ["'self'", "'cdn.jsdelivr.net"],
+        scriptSrc: ["'self'", 'blob:', 'cdn.jsdelivr.net'],
+        styleSrc: ["'self'", 'cdn.jsdelivr.net', 'blob:'],
       },
       defaultSrc: [
-        "'self'", "'blob'", "'cdn.jsdelivr.net",
+        "'self'", 'blob:', 'cdn.jsdelivr.net',
       ],
     },
   }));
