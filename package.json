@@ -10,9 +10,6 @@
     "start": "node ./server/app.js",
     "pretest": "eslint ./server --fix",
     "test": "echo \"Tests complete\"",
-    "build": "gulp build",
-    "watch": "gulp watch",
-    "heroku-postbuild": "gulp herokuBuild"
   },
   "author": "esoccoli",
   "license": "Apache 2.0",
