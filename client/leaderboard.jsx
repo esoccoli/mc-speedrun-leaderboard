@@ -5,61 +5,32 @@ const _ = require('underscore');
 
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
-const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Form, Table, Container } = require('reactstrap');
-// const { Form, Label, Input } = require('reactstrap');
-
-// import banner1 from '../hosted/img/banner-1.jpg';
+const { Modal, ModalBody, Button, ModalHeader, ModalFooter, Input, InputGroup, Label, Table, Container } = require('reactstrap');
 
 const handleNewSubmission = (e, onTimeSubmitted) => {
   e.preventDefault();
   helper.hideError();
-  // console.log(e.target.style.backgroundColor);
-  // e.target.style.backgroundColor = "red";
 
   const timeHrs = e.target.querySelector('#hours').value;
   const timeMins = e.target.querySelector('#minutes').value;
   const timeSecs = e.target.querySelector('#seconds').value;
   const timeMs = e.target.querySelector('#milliseconds').value;
 
-  // const time = e.target.querySelector('#completionTime').value;
   const category = e.target.querySelector('#category').value;
   const version = e.target.querySelector('#version').value;
   const difficulty = e.target.querySelector('#difficulty').value;
-  const verified = false;
+  const isPrivate = e.target.querySelector('#isPrivate').checked;
 
-  // console.log(`timeHrs: ${timeHrs}`);
-  // console.log(`timeMins: ${timeMins}`);
-  // console.log(`timeSecs: ${timeSecs}`);
-  // console.log(`timeMs: ${timeMs}`);
-  // console.log(`category: ${category}`);
-  // console.log(`version: ${version}`);
-  // console.log(`difficulty: ${difficulty}`);
+  console.log(isPrivate);
 
   if (!timeHrs || !timeMins || !timeSecs || !timeMs || !category || !version || !difficulty) {
     helper.handleError('All fields are required');
     return false;
   }
 
-  helper.sendPost(e.target.action, { timeHrs, timeMins, timeSecs, timeMs, category, version, difficulty, verified }, onTimeSubmitted);
+  helper.sendPost(e.target.action, { timeHrs, timeMins, timeSecs, timeMs, category, version, difficulty, isPrivate }, onTimeSubmitted);
   return false;
 };
-
-// const handleDomo = (e, onDomoAdded) => {
-//   e.preventDefault();
-//   helper.hideError();
-
-//   const name = e.target.querySelector('#domoName').value;
-//   const age = e.target.querySelector('#domoAge').value;
-//   const nickname = e.target.querySelector('#domoNickname').value;
-
-//   if (!name || !age || !nickname) {
-//     helper.handleError('All fields are required');
-//     return false;
-//   }
-
-//   helper.sendPost(e.target.action, { name, age, nickname }, onDomoAdded);
-//   return false;
-// };
 
 
 const RunForm = (props) => {
@@ -130,6 +101,11 @@ const RunForm = (props) => {
                 <option value="Peaceful">Peaceful</option>
               </select>
             </div>
+
+            <div id='submissionPrivacy'>
+              <Label htmlFor="isPrivate">Private? &nbsp;</Label>
+              <input type='checkbox' name='isPrivate' id='isPrivate' />
+            </div>
             <Button type='submit' color="success" className='btn' onSubmit={(e) => handleNewSubmission(e, props.triggerReload)}>
               Submit
             </Button>
@@ -170,21 +146,20 @@ const RunList = (props) => {
     time = `${run.timeHrs}h ${run.timeMins}m ${run.timeSecs}s ${run.timeMs}ms`;
     return (
       <tr key={i} className={run}>
-        {/* <img src="/assets/img/domoface.jpeg" alt="domo face" className='domoFace' /> */}
         <td className='place'>{i + 1}</td>
         <td className='runner'>{run.user}</td>
         <td className='time'>{time}</td>
         <td className='category'>{run.category}</td>
         <td className='version'>{run.version}</td>
         <td className='difficulty'>{run.difficulty}</td>
-        <td className='verified'>{run.verified ? 'True' : 'False'}</td>
+        <td className='isPrivate'>{run.isPrivate}</td>
       </tr>
     );
   });
 
   return (
     <div className='runList'>
-      <Table>
+      <Table color='success'>
         <thead>
           <tr>
             <th>Place</th>
@@ -193,7 +168,7 @@ const RunList = (props) => {
             <th>Category</th>
             <th>Version</th>
             <th>Difficulty</th>
-            <th>Verified</th>
+            <th>Private</th>
           </tr>
         </thead>
         <tbody>
@@ -229,14 +204,19 @@ const GameStats = (props) => {
   }, [props.reloadStats]);
 
   return (
-    <Container id='gameStats'>
-      <div>
-        Users: {numUsers}
+    <div id='gameStats' className='margin-sides'>
+      <div className='has-text-black has-text-centered'>
+        Game Stats
       </div>
-      <div>
-        Submissions: {numSubmissions}
+      <div className='has-text-centered has-text-black'>
+        <div>
+          Users: {numUsers}
+        </div>
+        <div>
+          Submissions: {numSubmissions}
+        </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
@@ -256,27 +236,26 @@ const RecentRuns = (props) => {
   const runNode = recentRuns.map((run, i) => {
     time = `${run.timeHrs}h ${run.timeMins}m ${run.timeSecs}s ${run.timeMs}ms`;
     return (
-      <div key={i} className={run}>
-        {/* <img src="/assets/img/domoface.jpeg" alt="domo face" className='domoFace' /> */}
-        {/* <div className='place'>{i + 1}</div> */}
-        <div className='runner'>{run.user}</div>
-        <div className='time'>{time}</div>
-        <div className='category'>{run.category}</div>
-        <div className='version'>{run.version}</div>
-        <div className='difficulty'>{run.difficulty}</div>
-        <div className='verified'>{run.verified ? 'True' : 'False'}</div>
+      <div key={i} className={run} id='runNode'>
+        <div className='runner'>User: {run.user}</div>
+        <div className='time'>Time: {time}</div>
+        <div className='category'>Category: {run.category}</div>
+        <div className='version'>Version: {run.version}</div>
+        <div className='difficulty'>Difficulty: {run.difficulty}</div>
       </div>
     );
   });
 
   return (
-    <Container>
+    <div className='recentRun margin-sides has-text-centered is-half-width has-text-black margin-top'>
+      <h3 className='has-text-weight-bold is-half'>Recent Run</h3>
       {runNode}
-    </Container>
+    </div>
   )
 };
 
-const Advertisement = (props) => {
+// Displays an ad on the page (as well as the premium toggle)
+const Advertisement = () => {
 
   const images = [
     '/assets/img/banner-1.jpg',
@@ -295,21 +274,23 @@ const Advertisement = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrImg(images[_.random(images.length - 1)]);
-    }, 15000)
+    }, 15000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // const premiumToggle =
   return (
-    <div>
-      <input type="checkbox" name="premium" id="togglePremium" onChange={toggleIsPremium} />
+    <Container className='container is-centered has-background-green block'>
+      <div className='is-size-5 has-text-black'>
+        <label htmlFor='premium'>Premium? &nbsp; </label>
+        <input type="checkbox" name="premium" id="toggle-premium" className='checkbox is-size-5' onChange={toggleIsPremium} />
+      </div>
       {
         isPremium ?
           <></> :
-          <img src={currImg} alt="imag" />
+          <img className='image' src={currImg} alt="imag" />
       }
-    </div>
+    </Container>
   );
 };
 
@@ -321,7 +302,7 @@ const App = () => {
   return (
     <div>
       <div className='ad'>
-        <Advertisement />
+        <Advertisement className='smaller' />
       </div>
       <div id='submitRun'>
         <RunForm triggerReload={() => {
@@ -330,18 +311,16 @@ const App = () => {
           setReloadRecentRuns(!reloadRecentRuns)
         }} />
       </div>
-      <div className='col-8'>
+      <div className=''>
         <div id='runs'>
-          <RunList runs={[]} reloadRuns={reloadRuns} />
+          <RunList runs={[]} reloadRuns={reloadRuns} className='left-margin' />
         </div>
       </div>
-      <div className='col-4'>
-        <div id='stats'>
-          <GameStats reloadStats={reloadStats} />
-        </div>
-        <div id='recentRuns'>
-          <RecentRuns recentRuns={[]} reloadRecentRuns={reloadRecentRuns} />
-        </div>
+      <div id='stats is-inline-flex'>
+        <GameStats reloadStats={reloadStats} className='is-flex' />
+        <RecentRuns recentRuns={[]} reloadRecentRuns={reloadRecentRuns} className='is-flex' />
+      </div>
+      <div id='recentRuns'>
       </div>
     </div>
   );

@@ -78,14 +78,9 @@ const changePass = async (req, res) => {
 
     const account = await Account.findOneAndUpdate(filter, update);
     console.log(account);
-    // console.log(updatedAccount.password);
-    // const newAccount = new Account({ username, password: hash });
     return res.json({ redirect: '/' });
   } catch (err) {
     console.log(err);
-    // if (err.code === 11000) {
-    //   return res.status(400).json({ error: 'Username already in use!' });
-    // }
     return res.status(500).json({ error: 'An error occured!' });
   }
 };

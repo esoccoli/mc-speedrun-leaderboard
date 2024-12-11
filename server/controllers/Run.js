@@ -1,4 +1,3 @@
-// const { mongoose } = require('mongoose');
 const models = require('../models');
 const RunModel = require('../models/Run');
 
@@ -33,7 +32,7 @@ const addRun = async (req, res) => {
     category: req.body.category,
     version: req.body.version,
     difficulty: req.body.difficulty,
-    verified: req.body.verified,
+    isPrivate: req.body.isPrivate,
   };
 
   try {
@@ -49,7 +48,7 @@ const addRun = async (req, res) => {
       category: newRun.category,
       version: newRun.version,
       difficulty: newRun.difficulty,
-      verified: newRun.verified,
+      isPrivate: newRun.isPrivate,
     });
   } catch (err) {
     console.log(err);
@@ -63,18 +62,14 @@ const addRun = async (req, res) => {
 const getRuns = async (req, res) => {
   let query = {};
 
-  // If the includeUnverified param is missing or set to false, default to not including them
-  // Otherwise, include all results regardless of verification status
-
-  // TODO: Change this to only retrieve the selected category
   if (!req.session.account.isAdmin) {
-    query = { verified: false };
+    query = { isPrivate: 'False' };
   } else {
     query = {};
   }
 
   try {
-    const docs = (await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty verified').sort({
+    const docs = (await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty isPrivate').sort({
       timeHrs: 1, timeMins: 1, timeSecs: 1, timeMs: 1,
     }).exec());
 
@@ -90,7 +85,7 @@ const getPersonalRuns = async (req, res) => {
   const query = { user: req.session.account.user };
 
   try {
-    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty verified').exec();
+    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty isPrivate').exec();
 
     return res.json({ runs: docs });
   } catch (err) {
@@ -105,11 +100,12 @@ const getNumSubmissions = async (req, res) => {
   return res.status(200).json({ numSubmissions });
 };
 
+// Gets the most recently submitted
 const getRecentRuns = async (req, res) => {
   const query = {};
 
   try {
-    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty verified createdDate').sort({ createdDate: -1 }).limit(1)
+    const docs = await Run.find(query).select('user timeHrs timeMins timeSecs timeMs category version difficulty isPrivate createdDate').sort({ createdDate: -1 }).limit(1)
       .exec();
     console.log(docs);
     return res.json({ recentRuns: docs });
@@ -126,7 +122,4 @@ module.exports = {
   getPersonalRuns,
   getNumSubmissions,
   getRecentRuns,
-  // makeDomo,
-  // deleteDomo,
-  // getDomos,
 };

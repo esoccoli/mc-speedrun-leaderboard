@@ -23,6 +23,8 @@ const router = (app) => {
 
   app.get('/getNumUsers', mid.requiresLogin, controllers.Account.getNumUsers);
   app.get('/getNumSubmissions', mid.requiresLogin, controllers.Run.getNumSubmissions);
+
+  app.get('*', (req, res) => res.redirect('/'));
 };
 
 module.exports = router;
