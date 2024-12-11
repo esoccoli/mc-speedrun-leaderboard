@@ -9,7 +9,7 @@
     "nodemon": "nodemon -e js,jsx,html,css --watch ./server --watch ./hosted ./server/app.js",
     "start": "node ./server/app.js",
     "pretest": "eslint ./server --fix",
-    "test": "echo \"Tests complete\"",
+    "test": "echo \"Tests complete\""
   },
   "author": "esoccoli",
   "license": "Apache 2.0",
