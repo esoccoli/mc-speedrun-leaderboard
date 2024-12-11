@@ -122,7 +122,7 @@ const herokuBuild = gulp.parallel(sassTask, jsTask);
   gulp when it has stopped watching our code.
 */
 const watch = (done) => {
-  gulp.watch('./scss', sassTask);
+  // gulp.watch('./scss', sassTask);
   gulp.watch(['./client/*.js', './client/*.jsx'], jsTask);
   nodemon({
     script: './server/app.js',
